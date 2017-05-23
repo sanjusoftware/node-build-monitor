@@ -13,6 +13,13 @@ module.exports = function () {
                 'accept-encoding': 'application/json'
             };
         },
+        log = function log() {
+          var msg = [new Date().toLocaleTimeString(), '| BuddyBuild |'];
+          for (var i in arguments) {
+            msg.push(arguments[i]);
+          }
+          console.log.apply(this, msg);
+        },
         makeUrl = function (app_id, build_id, branch, baseUrl) { //assemble url with designated branch id
             if (build_id) { // to query one build provide a build_id
                 baseUrl += '/' + build_id;
@@ -153,10 +160,10 @@ module.exports = function () {
 
     self.check = function (callback) {
         if (self.configuration.app_id) {
-          console.log('Fetching builds for app : ' + self.configuration.app_id);
+          log('Fetching builds for app : ' + self.configuration.app_id);
           queryBuilds(callback);
         } else {
-          console.log('app_id not specified, fetching builds for all apps ...');
+          log('No app_id provided, fetching builds for all apps ...');
           queryAllAppBuilds(callback);
         }
     };
